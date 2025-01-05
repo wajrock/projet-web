@@ -1,0 +1,33 @@
+@if (userDetail && associations) {
+  <main class="user-detail-wrap">
+    <section class="user-detail-wrap-infos">
+        <img [src]="'avatars/'+ userDetail.avatar +'.png'" alt="">
+        <h1>{{userDetail.firstname}} {{userDetail.lastname}}</h1>
+        <p>{{userDetail.age}} ans</p>
+        <div class="user-detail-wrap-infos-edit">
+          <p>Modifer</p>
+        </div>
+       
+    </section>
+    
+        <section class="user-detail-wrap-associations">
+            @if (associations.length > 0){
+              @if (isProfile) {
+                <h2 class="user-detail-wrap-associations-title">My Associations</h2>
+              } @else {
+                <h2 class="user-detail-wrap-associations-title">{{userDetail.firstname}}'s Associations</h2>
+              }
+            <div class="user-detail-wrap-associations-grid">
+              @for (association of associations; track association.id){
+                <app-association-card [association]="association"></app-association-card>
+              }
+            </div>
+            
+        } @else {
+            <h2 class="user-detail-wrap-associations-empty">{{userDetail.firstname}} ne fait parti(e) d'aucune association.</h2>
+        }
+        </section>
+    
+    
+</main>
+}

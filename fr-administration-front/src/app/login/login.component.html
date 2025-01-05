@@ -1,0 +1,23 @@
+<main class="login-wrap">
+  <header class="login-wrap-header">
+    <h1 class="login-wrap-header-logo">FR-ADMINISTRATION</h1>
+  </header>
+  <form class="login-wrap-form">
+    <label for="username">Username
+      <input type="text" id="username" placeholder="1" />
+    </label>
+    
+    <label for="password">Password
+      <input type="password" id="password" placeholder="*********" />
+    </label>
+    <button type="button" (click)="login()">Login</button>
+  </form>
+
+  
+  
+</main>
+@if (errorMessage !== ""){
+  <app-toast [message]="errorMessage" type="error" (toastClosed)="closePopup()"></app-toast>
+}
+
+  
