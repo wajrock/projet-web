@@ -19,7 +19,7 @@ export class User {
   @Exclude()
   public password: string;
 
-  @Column()
+  @Column({nullable: true})
   public avatar: string;
 
   constructor(

@@ -48,7 +48,6 @@ export class AssociationsService {
 
   async getAll(): Promise<AssociationDTO[]> {
     const associations = await this.repository.find({ relations: ['users'] });
-    console.log(associations[0]);
     return Promise.all(
       associations.map((association) => this.toDTO(association)),
     );
