@@ -77,7 +77,6 @@ export class UsersListComponent implements OnInit{
           this.fetchUser()
         }
       }
-      
     })
   }
 
