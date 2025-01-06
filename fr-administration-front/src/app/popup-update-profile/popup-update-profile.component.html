@@ -4,13 +4,17 @@
   </h2>
   <div class="popup-wrap-content-separator"></div>
   <div class="popup-wrap-content-form">
-    <label for="firstname">Prénom
+    <label for="firstname">Firstname
         <input type="text" id="firstname" [placeholder]="currentUserDetail.firstname" [(ngModel)]="newUserDetail.firstname" />
       </label>
 
 
-      <label for="lastname">Nom
+      <label for="lastname">Lastname
         <input type="text" id="lastname" [placeholder]="currentUserDetail.lastname" [(ngModel)]="newUserDetail.lastname" />
+      </label>
+
+      <label for="age">Age
+        <input type="number" id="age" [placeholder]="currentUserDetail.age" [(ngModel)]="newUserDetail.age" />
       </label>
       
       <label for="password">Password
