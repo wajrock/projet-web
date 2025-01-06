@@ -1,60 +1,63 @@
-@if (user && associations){
-<section
-  class="user-card-wrap"
-  [routerLink]="['/users', user.id]"
-  (mouseover)="isHovered = true"
-  (mouseleave)="isHovered = false"
-  
->
-  <main class="user-card-wrap-content">
-    <img
-      class="user-card-wrap-content-avatar"
-      [src]="'avatars/' + user.avatar + '.png'"
-      alt=""
-    />
-    @if (page === "association" && user.role){
-        <div class="user-card-wrap-role">
-          <p>{{ user.role }}</p>
-        </div>
-        }
-    <div class="user-card-wrap-content-infos">
-      <h1>{{ user.firstname }} {{ user.lastname }}</h1>
-      <p>{{ user.age }} ans</p>
-    </div>
-  </main>
-  @if (associations.length > 0) {
-  <div class="user-card-wrap-separator"></div>
-  <div class="user-card-wrap-associations">
-    @for (association of associations; track association.id){
-    <div class="user-card-wrap-associations-item">
-      <img [src]="'associations/' + association.logo + '.png'" alt="" />
-      
-      <p>{{ association.name }}</p>
+@if (user && associations) {
+  <section
+    class="user-card-wrap"
+    [routerLink]="['/users', user.id]"
+    (mouseover)="isHovered = true"
+    (mouseleave)="isHovered = false"
+  >
+    <main class="user-card-wrap-content">
+      <img
+        class="user-card-wrap-content-avatar"
+        [src]="'avatars/' + user.avatar + '.png'"
+        alt=""
+      />
+      @if (page === "association" && user.role) {
+      <div class="user-card-wrap-role">
+        <p>{{ user.role }}</p>
+      </div>
+      }
+      <div class="user-card-wrap-content-infos">
+        <h1>{{ user.firstname }} {{ user.lastname }}</h1>
+        <p>{{ user.age }} ans</p>
+      </div>
+    </main>
+    @if (associations.length > 0) {
+    <div class="user-card-wrap-separator"></div>
+    <div class="user-card-wrap-associations">
+      @for (association of associations; track association.id) {
+      <div class="user-card-wrap-associations-item">
+        <img [src]="'associations/' + association.logo + '.png'" alt="" />
+        <p>{{ association.name }}</p>
+      </div>
+      }
     </div>
     }
-  </div>
-  } @if (isHovered){
-  <div class="user-card-wrap-delete" (click)="openPopup($event)">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M3 6H21M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6M10 11V17M14 11V17"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  </div>
-  } @if (page === "users"){
-  <div class="user-card-wrap-id">
-    <p>#{{ user.id }}</p>
-  </div>
+    @if (isHovered) {
+    <div class="user-card-wrap-delete" (click)="openPopup($event)">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M3 6H21M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6M10 11V17M14 11V17"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+    }
+    @if (page === "users") {
+    <div class="user-card-wrap-id">
+      <p>#{{ user.id }}</p>
+    </div>
+    }
+  </section>
   }
-</section>
-}
-
-@if (showPopup) {
+  
+  @if (showPopup) {
   <app-popup (close)="closePopup()">
     <app-popup-delete type="user" (closePopup)="closePopup()" (removeId)="isDeleted()"></app-popup-delete>
   </app-popup>
-}
+  }
+  
+  
+  

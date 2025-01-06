@@ -1,0 +1,67 @@
+<div class="popup-wrap-content">
+    <h2 class="popup-wrap-content-title">Ajouter un utilisateur</h2>
+    <div class="popup-wrap-content-separator"></div>
+    
+    <div class="popup-wrap-content-message">
+      <p>Veuillez remplir les informations ci-dessous pour ajouter un nouvel utilisateur.</p>
+    </div>
+    
+    <form class="popup-wrap-content-form">
+      <div class="form-group">
+        <label for="firstname">Prénom</label>
+        <input
+          id="firstname"
+          type="text"
+          [(ngModel)]="newUser.firstname"
+          name="firstname"
+          placeholder="Entrez le prénom"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="lastname">Nom</label>
+        <input
+          id="lastname"
+          type="text"
+          [(ngModel)]="newUser.lastname"
+          name="lastname"
+          placeholder="Entrez le nom"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input
+          id="age"
+          type="number"
+          [(ngModel)]="newUser.age"
+          name="age"
+          placeholder="Entrez l'age"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="newUser.password"
+          name="password"
+          placeholder="Entrez le mot de passe"
+          required
+        />
+      </div>
+    </form>
+    
+    <section class="popup-wrap-content-actions">
+      <div class="popup-wrap-content-actions-cancel" (click)="close()">
+        <p>Annuler</p>
+        <div *ngIf="isLoading" class="loader"></div>
+      </div>
+      <div class="popup-wrap-content-actions-cta" (click)="addUser()">
+        <p>Ajouter</p>
+        <div *ngIf="isLoading" class="loader"></div>
+      </div>
+    </section>
+  </div>
+  

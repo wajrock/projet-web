@@ -5,9 +5,11 @@ import { ApiHelperService } from '../services/api-helper.service';
 import { Router } from '@angular/router';
 import { TokenStorageService } from '../services/token-storage.service';
 
+
 export interface UserUpdate {
   firstname: string | undefined,
   lastname: string | undefined,
+  age?: number | undefined, 
   password: string | undefined,
 }
 @Component({
