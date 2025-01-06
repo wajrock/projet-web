@@ -12,21 +12,23 @@ import { PopupDeleteComponent } from '../popup-delete/popup-delete.component';
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.scss'
 })
-export class UserCardComponent implements OnInit{
+export class UserCardComponent implements OnInit {
   @Input() user!: UserData;
   @Input() page: string = "users";
   @Output() deleted = new EventEmitter<void>();
+  @Output() userAdded = new EventEmitter<UserData>(); // Événement pour signaler l'ajout d'un utilisateur
   associations!: AssociationData[];
   isHovered: boolean = false;
   showPopup: boolean = false;
+  showAddPopup: boolean = false; // État pour gérer le popup d'ajout
 
-  constructor (private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-      this.fetchUserAssociations();
+    this.fetchUserAssociations();
   }
 
-  fetchUserAssociations(): void{
+  fetchUserAssociations(): void {
     this.http
       .get<AssociationData[]>(`http://localhost:3000/associations/user/${this.user.id}`, {
         observe: 'response',
@@ -41,20 +43,47 @@ export class UserCardComponent implements OnInit{
       });
   }
 
-  openPopup(event: Event): void{
+  openPopup(event: Event): void {
     event.stopPropagation();
     this.showPopup = true;
   }
 
-  closePopup(): void{
+  closePopup(): void {
     this.showPopup = false;
   }
 
   onClick(event: MouseEvent): void {
-    this.router.navigateByUrl(`/users/${this.user.id}`)
+    this.router.navigateByUrl(`/users/${this.user.id}`);
   }
 
-  isDeleted(): void{
+  isDeleted(): void {
     this.deleted.emit();
+  }
+
+  // Ouvre le popup pour ajouter un utilisateur
+  openAddPopup(): void {
+    this.showAddPopup = true;
+  }
+
+  // Ferme le popup pour ajouter un utilisateur
+  closeAddPopup(): void {
+    this.showAddPopup = false;
+  }
+
+  // Ajoute un utilisateur
+  addUser(newUser: UserData): void {
+    this.http
+      .post<UserData>('http://localhost:3000/users', newUser, {
+        observe: 'response',
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.ok && response.body) {
+            this.userAdded.emit(response.body); // Émet l'utilisateur ajouté
+            this.closeAddPopup(); // Ferme le popup après l'ajout
+          }
+        },
+        error: (error) => console.log('error', error),
+      });
   }
 }

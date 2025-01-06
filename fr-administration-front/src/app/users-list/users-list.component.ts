@@ -6,6 +6,8 @@ import { TokenStorageService } from '../services/token-storage.service';
 import { NavComponent } from '../nav/nav.component';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { UserCardComponent } from '../user-card/user-card.component';
+import { PopupAddUserComponent } from '../popup-add-user/popup-add-user.component';
+import { PopupComponent } from '../popup/popup.component';
 
 export interface UserData{
   id: number,
@@ -18,7 +20,7 @@ export interface UserData{
 
 @Component({
   selector: 'app-users-list',
-  imports: [MatTableModule, NavComponent,RouterLink, UserCardComponent],
+  imports: [MatTableModule, NavComponent,RouterLink, UserCardComponent, PopupAddUserComponent,PopupComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'
 })
@@ -27,13 +29,26 @@ export class UsersListComponent implements OnInit{
   displayedColumns: string[] = ['id', 'lastname', 'firstname', 'age', 'actions'];
   originaleDataSource: UserData[] = [];
   dataSource:UserData[] = [];
+  showPopup: boolean= false;
   constructor (private http: HttpClient,private service:TokenStorageService,private router:Router) {};
   
-
+  
   ngOnInit(): void {
    this.fetchUser();
     
   }
+   openPopup(): void{
+    this.showPopup= true;
+    
+   }
+
+   closePopup(): void{
+    this.showPopup= false;
+    
+   }
+   onUserAdded():void{
+    this.fetchUser()
+   }
 
   fetchUser():void{
     this.http.get('http://localhost:3000/users', { observe: 'response' })
