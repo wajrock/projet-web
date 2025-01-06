@@ -47,6 +47,8 @@ export class UsersListComponent implements OnInit{
     
    }
    onUserAdded():void{
+    console.log("good");
+    
     this.fetchUser()
    }
 

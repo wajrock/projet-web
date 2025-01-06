@@ -12,7 +12,7 @@
         <input
           id="firstname"
           type="text"
-          [(ngModel)]="firstname"
+          [(ngModel)]="newUser.firstname"
           name="firstname"
           placeholder="Entrez le prénom"
           required
@@ -23,7 +23,7 @@
         <input
           id="lastname"
           type="text"
-          [(ngModel)]="lastname"
+          [(ngModel)]="newUser.lastname"
           name="lastname"
           placeholder="Entrez le nom"
           required
@@ -33,10 +33,21 @@
         <label for="age">Age</label>
         <input
           id="age"
-          type="age"
-          [(ngModel)]="age"
+          type="number"
+          [(ngModel)]="newUser.age"
           name="age"
           placeholder="Entrez l'age"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="newUser.password"
+          name="password"
+          placeholder="Entrez le mot de passe"
           required
         />
       </div>
@@ -44,11 +55,11 @@
     
     <section class="popup-wrap-content-actions">
       <div class="popup-wrap-content-actions-cancel" (click)="close()">
-        <p *ngIf="isLoading === false">Annuler</p>
+        <p>Annuler</p>
         <div *ngIf="isLoading" class="loader"></div>
       </div>
       <div class="popup-wrap-content-actions-cta" (click)="addUser()">
-        <p *ngIf="isLoading === false">Ajouter</p>
+        <p>Ajouter</p>
         <div *ngIf="isLoading" class="loader"></div>
       </div>
     </section>

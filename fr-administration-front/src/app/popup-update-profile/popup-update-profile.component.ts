@@ -3,9 +3,11 @@ import { UserData } from '../users-list/users-list.component';
 import { FormsModule } from '@angular/forms';
 import { ApiHelperService } from '../services/api-helper.service';
 
-interface UserUpdate {
+
+export interface UserUpdate {
   firstname: string | undefined,
   lastname: string | undefined,
+  age?: number | undefined, 
   password: string | undefined,
 }
 @Component({
