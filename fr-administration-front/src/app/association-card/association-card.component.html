@@ -1,7 +1,9 @@
 @if (association){
     <section class="association-card-wrap" [routerLink]="['/associations', association.id]" (mouseover)="isHovered = true" (mouseleave)="isHovered = false">
         <main class="association-card-wrap-content">
-            <img class="association-card-wrap-content-logo" [src]="'associations/' +association.logo + '.png'" alt="">
+            <div class="association-card-wrap-content-id">
+                <p>#{{association.id}}</p>
+            </div>
             <div class="association-card-wrap-content-infos">
                 <h1>{{association.name}}</h1>
                 <p class="association-card-wrap-content-infos-size">{{association.members.length}} members</p>
@@ -15,10 +17,6 @@
                   </svg>
             </div>
         }
- 
-        <div class="association-card-wrap-id">
-            <p>#{{association.id}}</p>
-        </div>
         
         
     </section>

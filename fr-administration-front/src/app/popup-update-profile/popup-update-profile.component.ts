@@ -9,7 +9,7 @@ import { TokenStorageService } from '../services/token-storage.service';
 export interface UserUpdate {
   firstname: string | undefined,
   lastname: string | undefined,
-  age?: number | undefined, 
+  age: number | undefined, 
   password: string | undefined,
 }
 @Component({
@@ -24,7 +24,8 @@ export class PopupUpdateProfileComponent {
   newUserDetail: UserUpdate = {
     firstname: undefined,
     lastname: undefined,
-    password: undefined
+    password: undefined,
+    age: undefined,
     
   };
   @Output() updateProfile = new EventEmitter<void>();
