@@ -77,7 +77,10 @@ export class UsersService {
     }
 
     if (password !== undefined) {
-      user.password = password;
+      const saltOrRounds = 10;
+
+      const hash = await bcrypt.hash(password, saltOrRounds);
+      user.password = hash;
     }
 
     if (avatar !== undefined) {

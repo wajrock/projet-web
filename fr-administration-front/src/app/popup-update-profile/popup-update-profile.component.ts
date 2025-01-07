@@ -2,12 +2,14 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { UserData } from '../users-list/users-list.component';
 import { FormsModule } from '@angular/forms';
 import { ApiHelperService } from '../services/api-helper.service';
+import { Router } from '@angular/router';
+import { TokenStorageService } from '../services/token-storage.service';
 
 
 export interface UserUpdate {
   firstname: string | undefined,
   lastname: string | undefined,
-  age?: number | undefined, 
+  age: number | undefined, 
   password: string | undefined,
 }
 @Component({
@@ -22,13 +24,14 @@ export class PopupUpdateProfileComponent {
   newUserDetail: UserUpdate = {
     firstname: undefined,
     lastname: undefined,
-    password: undefined
+    password: undefined,
+    age: undefined,
     
   };
   @Output() updateProfile = new EventEmitter<void>();
   @Output() closePopup = new EventEmitter<void>();
 
-  constructor(private api:ApiHelperService) {};
+  constructor(private api:ApiHelperService, private router:Router,private service:TokenStorageService) {};
  
 
   close() {
@@ -41,9 +44,14 @@ export class PopupUpdateProfileComponent {
       {
         next: (response) => {
           if (response.ok && response.status === 200){
-            localStorage.setItem('currentUser', JSON.stringify(response.body))
-            this.updateProfile.emit();
-            this.close();
+            if (this.newUserDetail.password !== undefined){
+              this.service.clear();
+              this.router.navigateByUrl('/login')
+            } else {
+              localStorage.setItem('currentUser', JSON.stringify(response.body))
+              this.updateProfile.emit();
+              this.close();
+            }
           }
         }
         

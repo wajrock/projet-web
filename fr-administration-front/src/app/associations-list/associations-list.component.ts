@@ -1,62 +1,128 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { TokenStorageService } from '../services/token-storage.service';
-import { NavComponent } from '../nav/nav.component';
+import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { RouterLink } from '@angular/router';
+import { TokenStorageService } from '../services/token-storage.service';
+import { Router, RouterLink } from '@angular/router';
 import { AssociationCardComponent } from '../association-card/association-card.component';
-import { UserData } from '../users-list/users-list.component';
+import { PopupAddAssociationComponent } from '../popup-add-association/popup-add-association.component';
+import { PopupComponent } from '../popup/popup.component';
+import { FormsModule } from '@angular/forms';
 
 export interface AssociationData {
   id: number;
   name: string;
   logo: string;
-  members: UserData[]
+  members: any[];
 }
 
 @Component({
   selector: 'app-associations-list',
-  imports: [MatTableModule, NavComponent, RouterLink, AssociationCardComponent],
+  standalone: true,
+  imports: [
+    MatTableModule,
+    RouterLink,
+    AssociationCardComponent,
+    PopupAddAssociationComponent,
+    PopupComponent,
+    FormsModule
+  ],
   templateUrl: './associations-list.component.html',
-  styleUrl: './associations-list.component.scss',
+  styleUrls: ['./associations-list.component.scss'],
 })
-export class AssociationsListComponent {
+export class AssociationsListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'actions'];
   originaleDataSource: AssociationData[] = [];
   dataSource: AssociationData[] = [];
-  constructor(private http: HttpClient, private service: TokenStorageService) {}
+  showPopup: boolean = false;
+
+  constructor(
+    private http: HttpClient,
+    private service: TokenStorageService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.fetchAssociation()
+    this.fetchAssociations();
   }
 
-  fetchAssociation():void{
-    this.http.get('http://localhost:3000/associations', { observe: 'response' })
+
+  // Ouvre la popup pour ajouter une association
+  openPopup(): void {
+    this.showPopup = true;
+  }
+
+  // Ferme la popup
+  closePopup(): void {
+    this.showPopup = false;
+  }
+
+  // Appelé lorsque l'utilisateur ajoute une association
+  onAssociationAdded(): void {
+    console.log('Association added successfully.');
+    this.fetchAssociations();
+  }
+
+  // Récupère les associations depuis le serveur
+  fetchAssociations(): void {
+    this.http
+      .get('http://localhost:3000/associations', { observe: 'response' })
       .subscribe({
         next: (response) => {
-          this.originaleDataSource =  response.body as [];
-          this.dataSource =  response.body as [];
+          this.originaleDataSource = response.body as AssociationData[];
+          this.dataSource = response.body as AssociationData[];
         },
-      error: (error) => console.log('error')});
+        error: (error) =>
+          console.error('Error fetching associations:', error),
+      });
   }
 
+  // Filtre les associations en fonction de la recherche
   search(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
+    const value = (event.target as HTMLInputElement).value.toLowerCase();
     this.dataSource = this.originaleDataSource.filter(
-      (data: AssociationData) =>
-        data.name.toLowerCase().includes(value.toLowerCase()) ||
-        data.id.toString() === value
+      (association) =>
+        association.name.toLowerCase().includes(value) ||
+        association.id.toString() === value
     );
   }
 
-  removeAssociation(idToRemove:number):void{
-    this.http.delete(`http://localhost:3000/associations/${idToRemove}`,{observe: 'response'})
-    .subscribe({
-      next: (response) => {
-        if (response.ok){
-          this.fetchAssociation()
-        }
-      }
-    })
+  // Ajoute une nouvelle association
+  addAssociation(): void {
+    const newAssociation = {
+      name: 'New Association',
+      logo: 'logo.png',
+      members: [],
+    };
+
+    this.http
+      .post('http://localhost:3000/associations', newAssociation, {
+        observe: 'response',
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.ok) {
+            this.fetchAssociations();
+          }
+        },
+        error: (error) =>
+          console.error('Error adding association:', error),
+      });
+  }
+
+  // Supprime une association en fonction de son ID
+  removeAssociation(idToRemove: number): void {
+    this.http
+      .delete(`http://localhost:3000/associations/${idToRemove}`, {
+        observe: 'response',
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.ok) {
+            this.fetchAssociations();
+          }
+        },
+        error: (error) =>
+          console.error('Error removing association:', error),
+      });
   }
 }

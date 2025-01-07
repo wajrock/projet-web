@@ -6,27 +6,27 @@
     (mouseleave)="isHovered = false"
   >
     <main class="user-card-wrap-content">
-      <img
-        class="user-card-wrap-content-avatar"
-        [src]="'avatars/' + user.avatar + '.png'"
-        alt=""
-      />
-      @if (page === "association" && user.role) {
-      <div class="user-card-wrap-role">
-        <p>{{ user.role }}</p>
-      </div>
-      }
+      
+      @if (page === "users") {
+        <div class="user-card-wrap-content-id">
+          <p>#{{ user.id }}</p>
+        </div>
+        }
       <div class="user-card-wrap-content-infos">
         <h1>{{ user.firstname }} {{ user.lastname }}</h1>
         <p>{{ user.age }} ans</p>
       </div>
+      @if (page === "association" && user.role) {
+        <div class="user-card-wrap-content-role">
+          <p>{{ user.role }}</p>
+        </div>
+        }
     </main>
     @if (associations.length > 0) {
     <div class="user-card-wrap-separator"></div>
     <div class="user-card-wrap-associations">
       @for (association of associations; track association.id) {
       <div class="user-card-wrap-associations-item">
-        <img [src]="'associations/' + association.logo + '.png'" alt="" />
         <p>{{ association.name }}</p>
       </div>
       }
@@ -45,11 +45,7 @@
       </svg>
     </div>
     }
-    @if (page === "users") {
-    <div class="user-card-wrap-id">
-      <p>#{{ user.id }}</p>
-    </div>
-    }
+    
   </section>
   }
   
