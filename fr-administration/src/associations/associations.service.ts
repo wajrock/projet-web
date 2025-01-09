@@ -27,7 +27,9 @@ export class AssociationsService {
       avatar: user.avatar,
       firstname: user.firstname,
       age: user.age,
-      role: (await this.roleService.getById(user.id, idAssociation)).name,
+      role:
+        (await this.roleService.getById(user.id, idAssociation))?.name ||
+        'member',
     };
   }
 
@@ -106,6 +108,18 @@ export class AssociationsService {
     return await this.repository.save(newAssociation);
   }
 
+  async addMember(idAssociation: number, idUser: number): Promise<Association> {
+    const newMember: User = await this.service.getById(idUser);
+
+    const association: Association = await this.repository.findOne({
+      where: { id: Equal(idAssociation) },
+      relations: ['users'],
+    });
+    association.users.push(newMember);
+
+    return await this.repository.save(association);
+  }
+
   async update(
     id: number,
     idUsers: number[],
@@ -138,5 +152,20 @@ export class AssociationsService {
     return await this.repository
       .delete(id)
       .then((association) => association.affected === 1);
+  }
+
+  async removeMember(
+    idAssociation: number,
+    idUser: number,
+  ): Promise<Association> {
+    this.roleService.remove(idUser, idAssociation);
+    const association: Association = await this.repository.findOne({
+      where: { id: Equal(idAssociation) },
+      relations: ['users'],
+    });
+
+    association.users = association.users.filter((user) => user.id !== idUser);
+
+    return await this.repository.save(association);
   }
 }

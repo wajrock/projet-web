@@ -1,8 +1,10 @@
 @if (associationDetail && associationMembers) {
 <main class="association-detail-wrap">
   <section class="association-detail-wrap-infos">
-    <img [src]="'associations/' + associationDetail.logo + '.png'" alt="" />
     <h1>{{ associationDetail.name }}</h1>
+    <div class="association-detail-wrap-infos-edit" (click)="openPopup()">
+      <p>Modifer association</p>
+    </div>
   </section>
 
   <section class="association-detail-wrap-users">
@@ -12,11 +14,17 @@
     </h2>
     <div class="association-detail-wrap-users-grid">
       @for (member of associationDetail.members; track member.id){
-      <app-user-card [user]="member" page="association"></app-user-card>
+      <app-member-card [memberData]="member"></app-member-card>
       }
     </div>
 
     }
   </section>
 </main>
+}
+
+@if (showPopupEditAssociation) {
+  <app-popup (close)="closePopup()">
+    <app-popup-update-association (closePopup)="closePopup()" [associationData]="associationDetail" (contentUpdated)="fetchAssociationDetail()" ></app-popup-update-association>
+  </app-popup>
 }

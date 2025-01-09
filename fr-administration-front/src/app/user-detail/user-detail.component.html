@@ -1,7 +1,6 @@
 @if (userDetail && associations) {
   <main class="user-detail-wrap">
     <section class="user-detail-wrap-infos">
-        <img [src]="'avatars/'+ userDetail.avatar +'.png'" alt="">
         <h1>{{userDetail.firstname}} {{userDetail.lastname}}</h1>
         <p>{{userDetail.age}} ans</p>
         @if (isProfile){

@@ -5,6 +5,9 @@ import { AssociationData } from '../associations-list/associations-list.componen
 import { UserData } from '../users-list/users-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { UserCardComponent } from '../user-card/user-card.component';
+import { MemberCardComponent } from '../member-card/member-card.component';
+import { PopupUpdateAssociationComponent } from '../popup-update-association/popup-update-association.component';
+import { PopupComponent } from '../popup/popup.component';
 
 export interface MinutesData {
   idMinute: number;
@@ -15,7 +18,7 @@ export interface MinutesData {
 
 @Component({
   selector: 'app-association-detail',
-  imports: [UserCardComponent],
+  imports: [MemberCardComponent, PopupUpdateAssociationComponent, PopupComponent],
   templateUrl: './association-detail.component.html',
   styleUrl: './association-detail.component.scss',
 })
@@ -24,16 +27,17 @@ export class AssociationDetailComponent {
   associationDetail!: AssociationData;
   associationMembers!: UserData[];
   associationMinutes!: MinutesData[];
+  showPopupEditAssociation: boolean = false;
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.idAssociation = +this.route.snapshot.params['id'];
-    this.fetchUserDetail();
-    console.log(this.associationDetail.members);
-    
+    this.fetchAssociationDetail();
   }
 
-  fetchUserDetail(): void {
+  fetchAssociationDetail(): void {
+    
+    
     this.http
       .get<AssociationData>(`http://localhost:3000/associations/${this.idAssociation}`, {
         observe: 'response',
@@ -42,7 +46,6 @@ export class AssociationDetailComponent {
         next: (response) => {
           if (response.ok && response.body) {
             this.associationDetail = response.body;
-            console.log(this.associationDetail);
           }
         },
         error: (error) => console.log('error'),
@@ -55,9 +58,9 @@ export class AssociationDetailComponent {
       .subscribe({
         next: (response) => {
           if (response.ok && response.body) {
-            console.log(response.body);
             
             this.associationMembers = response.body;
+            console.log(this.associationMembers);
           }
         },
         error: (error) => console.log('error'),
@@ -75,5 +78,13 @@ export class AssociationDetailComponent {
         },
         error: (error) => console.log('error'),
       });
+  }
+
+  openPopup(): void {
+    this.showPopupEditAssociation = true;
+  }
+
+  closePopup(): void {
+    this.showPopupEditAssociation = false;
   }
 }

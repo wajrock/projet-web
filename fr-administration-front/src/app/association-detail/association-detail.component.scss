@@ -1,5 +1,5 @@
 .association-detail-wrap{
-    padding: 0 5rem;
+    padding: 8rem 5rem 2rem 5rem;
     display: flex;
     flex-direction: column;
 
@@ -9,10 +9,20 @@
         flex-direction: column;
         padding: 2.5rem 5rem;
 
-        & img {
-            width: 5rem;
-            margin-bottom: 1rem;
-            border-radius: 10rem;
+        &-edit {
+                background-color: #e2e8f0;
+                color: #0f172a;
+                padding: .5rem .75rem;
+                border-radius: .5rem;
+                font-size: .8rem;
+                font-weight: 600;
+                text-transform: capitalize;
+                margin-top: 1rem;
+
+                &:hover{
+                    background-color: #cbd5e1;
+                    cursor: pointer;
+                }
         }
     }
 

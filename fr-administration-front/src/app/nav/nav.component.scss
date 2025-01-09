@@ -2,7 +2,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 5rem;
+    padding: 1rem 5rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: white;
 
     &-logo{
         font-size: 1.5rem;
@@ -28,18 +33,21 @@
 
     &-actions{
         display: flex;
-        gap: 1rem;
+        gap: .5rem;
         
 
         &-profil{
-            height: 3rem;
-            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border-radius: 10rem;
-            overflow: hidden;
-
-            & img{
-                object-fit: cover;
-                height: 100%;
+            background-color: #f1f5f9;
+            color: #020617;
+            font-weight: 600;
+            padding: 0 1rem;
+            &:hover{
+                cursor: pointer;
+                background-color: #cbd5e1;
             }
             
         }

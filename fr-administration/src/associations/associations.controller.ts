@@ -83,12 +83,28 @@ export class AssociationsController {
     return await this.service.create(input.idUsers, input.name, input.logo);
   }
 
+  @Put(':idAssociation/:idUser')
+  async addMember(@Param() parameter: any): Promise<Association> {
+    return await this.service.addMember(
+      +parameter.idAssociation,
+      +parameter.idUser,
+    );
+  }
+
   @Put(':id')
   async update(
     @Body() input: any,
     @Param() parameter,
   ): Promise<AssociationDTO> {
     return await this.service.update(+parameter.id, input.idUsers, input.name);
+  }
+
+  @Delete(':idAssociation/:idUser')
+  async removeMember(@Param() parameter): Promise<Association> {
+    return await this.service.removeMember(
+      +parameter.idAssociation,
+      +parameter.idUser,
+    );
   }
 
   @Delete(':id')
