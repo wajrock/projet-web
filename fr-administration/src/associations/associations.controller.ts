@@ -15,6 +15,7 @@ import { AssociationDTO } from './associations.dto';
 import { Minute } from 'src/minute/minute.entity';
 import { Member } from './association.member';
 import { Association } from './association.entity';
+import { Role } from 'src/role/role.entity';
 
 @ApiTags('associations')
 @Controller('associations')
@@ -79,12 +80,18 @@ export class AssociationsController {
   }
 
   @Post()
-  async create(@Body() input: any): Promise<Association> {
-    return await this.service.create(input.idUsers, input.name, input.logo);
+  async create(@Body() input: any): Promise<Association | Role> {
+    if (input.idCreator) {
+      return await this.service.createWithPresident(
+        input.idUsers,
+        input.name,
+        input.idCreator,
+      );
+    }
   }
 
   @Put(':idAssociation/:idUser')
-  async addMember(@Param() parameter: any): Promise<Association> {
+  async addMember(@Param() parameter: any): Promise<Role> {
     return await this.service.addMember(
       +parameter.idAssociation,
       +parameter.idUser,

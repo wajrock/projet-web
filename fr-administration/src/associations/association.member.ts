@@ -12,9 +12,6 @@ export class Member {
   firstname: string;
 
   @Column()
-  avatar: string;
-
-  @Column()
   age: number;
 
   @Column()

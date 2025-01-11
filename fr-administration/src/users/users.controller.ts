@@ -71,7 +71,6 @@ export class UsersController {
       input.lastname,
       input.age,
       input.password,
-      input.avatar,
     );
   }
 
@@ -83,7 +82,6 @@ export class UsersController {
       input.age,
       input.password,
       +parameter.id,
-      input.avatar,
     );
   }
 
@@ -97,6 +95,6 @@ export class UsersController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return this.service.remove(+parameter.id);
+    return this.service.removeUserFromAll(+parameter.id);
   }
 }

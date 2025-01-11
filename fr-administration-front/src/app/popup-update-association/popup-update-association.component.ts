@@ -144,6 +144,22 @@ export class PopupUpdateAssociationComponent implements OnInit {
       }
     })
   }
+
+  updateRole(idMember: number, event: Event){
+    const newRole = (event.target as HTMLSelectElement).value;
+    console.log(newRole);
+    
+    this.api.put({endpoint: `/roles/${idMember}/${this.associationData.id}`, data: {name: newRole}}).subscribe({
+      next: (response) => {
+        if (response.ok) {
+          this.contentUpdated.emit()
+
+        }
+        
+      }
+    })
+    
+  }
   
 
 

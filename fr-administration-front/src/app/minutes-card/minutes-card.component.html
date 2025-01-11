@@ -1,0 +1,18 @@
+@if (minutesData) {
+<section class="minutes-card-wrap" (click)="openPopup()">
+  <main class="minutes-card-wrap-content">
+    <div class="minutes-card-wrap-content-date">
+      <h1>{{ minutesData.date }}</h1>
+    </div>
+    <div class="minutes-card-wrap-content-voters">
+      <p>{{ minutesData.voters.length }} voters</p>
+    </div>
+  </main>
+</section>
+}
+
+@if (showPopupDetail){
+  <app-popup (close)="closePopup()">
+    <app-popup-minutes-detail [minutesData]="minutesData" (closePopup)="closePopup()"></app-popup-minutes-detail>
+  </app-popup>
+}

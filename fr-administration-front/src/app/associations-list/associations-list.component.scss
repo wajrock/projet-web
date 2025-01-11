@@ -1,4 +1,4 @@
-.associationslist-container{
+.associations-container{
     display: flex;
     padding: 8rem 5rem 2rem 5rem;
     flex-direction: column;
@@ -22,6 +22,7 @@
 
             & svg{
                 height: 1.25rem;
+                display: none;
             }
 
             & input{

@@ -33,7 +33,7 @@
               <div class="members-content-grid-item-name">{{ member.firstname }} {{ member.lastname }}</div>
               <div class="members-content-grid-item-role">
                 
-                <select name="role" id="role" title="role" [(ngModel)]="member.role" >
+                <select name="role" id="role" title="role" [(ngModel)]="member.role" (change)="updateRole(member.id,$event)">
                     @if (!havePresident() || member.role === 'president'){
                         <option value="president" [selected]="member.role === 'president'">President</option>
                     }

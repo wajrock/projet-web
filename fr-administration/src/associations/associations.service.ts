@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Association } from './association.entity';
 import { User } from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
@@ -9,10 +9,12 @@ import { MinuteService } from 'src/minute/minute.service';
 import { Minute } from 'src/minute/minute.entity';
 import { Member } from './association.member';
 import { RoleService } from 'src/role/role.service';
+import { Role } from 'src/role/role.entity';
 
 @Injectable()
 export class AssociationsService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly service: UsersService,
     private readonly minutesService: MinuteService,
     private readonly roleService: RoleService,
@@ -24,7 +26,6 @@ export class AssociationsService {
     return {
       id: user.id,
       lastname: user.lastname,
-      avatar: user.avatar,
       firstname: user.firstname,
       age: user.age,
       role:
@@ -41,7 +42,6 @@ export class AssociationsService {
     const toDTO: AssociationDTO = {
       id: association.id,
       name: association.name,
-      logo: association.logo,
       members: members,
     };
 
@@ -50,7 +50,6 @@ export class AssociationsService {
 
   async getAll(): Promise<AssociationDTO[]> {
     const associations = await this.repository.find({ relations: ['users'] });
-    console.log(associations[0]);
     return Promise.all(
       associations.map((association) => this.toDTO(association)),
     );
@@ -89,18 +88,22 @@ export class AssociationsService {
     return this.minutesService.getByIdAssociation(idAssociation);
   }
 
-  async create(
+  async createWithPresident(
     idUsers: number[],
     name: string,
-    logo: string,
-  ): Promise<Association> {
+    idCreator?: number,
+  ): Promise<Role> {
+    const newAssociation: Association = await this.create(idUsers, name);
+    return this.roleService.create(idCreator, newAssociation.id, 'president');
+  }
+
+  async create(idUsers: number[], name: string): Promise<Association> {
     const users: User[] = await Promise.all(
       idUsers.map((id) => this.service.getById(+id)),
     );
 
     const newAssociation = await this.repository.create({
       name: name,
-      logo: logo,
     });
 
     newAssociation.users = users;
@@ -108,7 +111,7 @@ export class AssociationsService {
     return await this.repository.save(newAssociation);
   }
 
-  async addMember(idAssociation: number, idUser: number): Promise<Association> {
+  async addMember(idAssociation: number, idUser: number): Promise<Role> {
     const newMember: User = await this.service.getById(idUser);
 
     const association: Association = await this.repository.findOne({
@@ -116,8 +119,9 @@ export class AssociationsService {
       relations: ['users'],
     });
     association.users.push(newMember);
+    await this.repository.save(association);
 
-    return await this.repository.save(association);
+    return await this.roleService.create(idUser, idAssociation, 'member');
   }
 
   async update(
@@ -167,5 +171,18 @@ export class AssociationsService {
     association.users = association.users.filter((user) => user.id !== idUser);
 
     return await this.repository.save(association);
+  }
+
+  async removeUserFromAllAssociations(idUser: number): Promise<void> {
+    const associations = await this.repository.find({
+      relations: ['users'],
+    });
+
+    for (const association of associations) {
+      association.users = association.users.filter(
+        (user) => user.id !== idUser,
+      );
+      await this.repository.save(association);
+    }
   }
 }

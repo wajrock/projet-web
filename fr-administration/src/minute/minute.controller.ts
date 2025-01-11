@@ -69,6 +69,7 @@ export class MinuteController {
   ): Promise<Minute> {
     return await this.service.update(
       +parameter.idMinute,
+      input.idVoters,
       input.idAssociation,
       input.content,
     );

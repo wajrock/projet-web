@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserData } from '../users-list/users-list.component';
 import { HttpClient } from '@angular/common/http';
 import { AssociationData } from '../associations-list/associations-list.component';
@@ -7,10 +7,12 @@ import { MatTableModule } from '@angular/material/table';
 import { AssociationCardComponent } from '../association-card/association-card.component';
 import { PopupComponent } from '../popup/popup.component';
 import { PopupUpdateProfileComponent } from '../popup-update-profile/popup-update-profile.component';
+import { PopupDeleteComponent } from '../popup-delete/popup-delete.component';
+import { TokenStorageService } from '../services/token-storage.service';
 
 @Component({
   selector: 'app-user-detail',
-  imports: [MatTableModule, RouterLink, AssociationCardComponent, PopupComponent,PopupUpdateProfileComponent],
+  imports: [MatTableModule, RouterLink, AssociationCardComponent, PopupComponent,PopupUpdateProfileComponent,PopupDeleteComponent],
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss', '../../table.scss']
 })
@@ -20,8 +22,8 @@ export class UserDetailComponent implements OnInit{
   associations!: AssociationData[];
   displayedColumns: string[] = ['id', 'name', 'actions'];
   isProfile: boolean = false;
-  showPopupUpdateProfile: boolean = false;
-  constructor(private route: ActivatedRoute, private http:HttpClient) {}
+  showPopup: "edit" | "delete" | null = null;
+  constructor(private route: ActivatedRoute, private router: Router,private http:HttpClient,private service:TokenStorageService) {}
 
   ngOnInit(): void {
     if (this.route.snapshot.url.some((segment) => segment.path === "profile")){
@@ -56,15 +58,34 @@ export class UserDetailComponent implements OnInit{
     error: (error) => console.log('error')});
   }
 
-  openPopup(): void{
-    this.showPopupUpdateProfile = true;
+  openPopup(type: "edit"|"delete"): void{
+    this.showPopup = type;
   }
 
   closePopup(): void{
-    this.showPopupUpdateProfile = false;
+    this.showPopup = null;
   }
 
   updateProfile(): void{
     this.fetchUserDetail();
   }
+
+  removeUser(): void {
+    this.http
+      .delete(`http://localhost:3000/users/${this.idUser}`, {
+        observe: 'response',
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.ok) {
+            this.service.clear();
+            this.router.navigateByUrl("/login")
+          }
+        },
+        error: (error) =>
+          console.error('Error removing association:', error),
+      });
+  }
+
+  
 }

@@ -19,9 +19,6 @@ export class Association {
   @Column()
   name: string;
 
-  @Column()
-  logo: string;
-
   constructor(users: User[], name: string) {
     this.id = undefined;
     this.name = name;

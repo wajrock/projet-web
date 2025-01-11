@@ -1,41 +1,70 @@
 @if (userDetail && associations) {
-  <main class="user-detail-wrap">
-    <section class="user-detail-wrap-infos">
-        <h1>{{userDetail.firstname}} {{userDetail.lastname}}</h1>
-        <p>{{userDetail.age}} ans</p>
-        @if (isProfile){
-          <div class="user-detail-wrap-infos-edit" (click)="openPopup()">
-            <p>Modifer</p>
-          </div>
-        }
-        
-       
-    </section>
-    
-        <section class="user-detail-wrap-associations">
-            @if (associations.length > 0){
-              @if (isProfile) {
-                <h2 class="user-detail-wrap-associations-title">My Associations</h2>
-              } @else {
-                <h2 class="user-detail-wrap-associations-title">{{userDetail.firstname}}'s Associations</h2>
-              }
-            <div class="user-detail-wrap-associations-grid">
-              @for (association of associations; track association.id){
-                <app-association-card [association]="association"></app-association-card>
-              }
-            </div>
-            
-        } @else {
-            <h2 class="user-detail-wrap-associations-empty">{{userDetail.firstname}} ne fait parti(e) d'aucune association.</h2>
-        }
-        </section>
-    
-    
+<main class="user-detail-wrap">
+  <section class="user-detail-wrap-infos">
+    <h1>{{ userDetail.firstname }} {{ userDetail.lastname }}</h1>
+    <p>{{ userDetail.age }} ans</p>
+    @if (isProfile){
+    <div class="user-detail-wrap-infos-actions">
+      <div
+        class="user-detail-wrap-infos-actions-edit"
+        (click)="openPopup('edit')"
+      >
+        <p>Edit</p>
+      </div>
+
+      <div
+        class="user-detail-wrap-infos-actions-delete"
+        (click)="openPopup('delete')"
+      >
+        <p>Delete</p>
+      </div>
+    </div>
+    }
+  </section>
+
+  <section class="user-detail-wrap-associations">
+    @if (isProfile) {
+    <h2 class="user-detail-wrap-associations-title">My Associations</h2>
+    } @else {
+    <h2 class="user-detail-wrap-associations-title">
+      {{ userDetail.firstname }}'s Associations
+    </h2>
+    } @if (associations.length > 0){
+    <div class="user-detail-wrap-associations-grid">
+      @for (association of associations; track association.id){
+      <app-association-card [association]="association"></app-association-card>
+      }
+    </div>
+
+    } @else { @if (isProfile) {
+    <h2 class="user-detail-wrap-associations-empty">
+      You are not part of any association.
+    </h2>
+    } @else {
+    <h2 class="user-detail-wrap-associations-empty">
+      {{ userDetail.firstname }} is not part of any association.
+    </h2>
+    } }
+  </section>
 </main>
 
-  @if (isProfile && showPopupUpdateProfile){
-    <app-popup (close)="closePopup()">
-      <app-popup-update-profile (closePopup)="closePopup()" (updateProfile)="updateProfile()"></app-popup-update-profile>
-    </app-popup>
+@if (showPopup === "edit"){
+<app-popup (close)="closePopup()">
+  <app-popup-update-profile
+    (closePopup)="closePopup()"
+    (updateProfile)="updateProfile()"
+  ></app-popup-update-profile>
+</app-popup>
+}
+
+@if (showPopup === "delete"){
+  <app-popup (close)="closePopup()">
+    <app-popup-delete
+    type="user"
+      (closePopup)="closePopup()"
+      (removeId)="removeUser()"
+    ></app-popup-delete>
+  </app-popup>
   }
+
 }

@@ -11,7 +11,4 @@ export class AssociationDTO {
 
   @Column()
   name: string;
-
-  @Column()
-  logo: string;
 }

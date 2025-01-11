@@ -1,30 +1,63 @@
-@if (associationDetail && associationMembers) {
+@if (associationDetail && associationMinutes) {
 <main class="association-detail-wrap">
   <section class="association-detail-wrap-infos">
     <h1>{{ associationDetail.name }}</h1>
-    <div class="association-detail-wrap-infos-edit" (click)="openPopup()">
-      <p>Modifer association</p>
+    @if (loggedUserIsPresident){
+    <div class="association-detail-wrap-infos-actions">
+      <div class="association-detail-wrap-infos-actions-edit" (click)="openPopup('edit')">
+        <p>Edit</p>
+      </div>
+      
+        <div class="association-detail-wrap-infos-actions-delete" (click)="openPopup('delete')">
+          <p>Delete</p>
+        </div>
+     
     </div>
+  }
   </section>
 
   <section class="association-detail-wrap-users">
-    @if (associationDetail.members.length > 0){
     <h2 class="association-detail-wrap-users-title">
-      {{ associationDetail.name }}'s Members
+      Members
     </h2>
+    @if (associationDetail.members.length > 0){
     <div class="association-detail-wrap-users-grid">
       @for (member of associationDetail.members; track member.id){
       <app-member-card [memberData]="member"></app-member-card>
       }
     </div>
 
+    } @else {
+      <p>Assocation {{associationDetail.name }} has no members.</p>
+    }
+  </section>
+
+  <section class="association-detail-wrap-minutes">
+    <h2 class="association-detail-wrap-minutes-title">
+     Minutes
+    </h2>
+    @if (associationMinutes.length > 0){
+    <div class="association-detail-wrap-minutes-grid">
+      @for (minutes of associationMinutes; track minutes.idMinute){
+      <app-minutes-card [minutesData]="minutes"></app-minutes-card>
+      }
+    </div>
+
+    } @else {
+      <p class="association-detail-wrap-minutes-grid-empty">Assocation {{associationDetail.name }} has no minutes.</p>
     }
   </section>
 </main>
 }
 
-@if (showPopupEditAssociation) {
+@if (showPopup === "edit") {
   <app-popup (close)="closePopup()">
     <app-popup-update-association (closePopup)="closePopup()" [associationData]="associationDetail" (contentUpdated)="fetchAssociationDetail()" ></app-popup-update-association>
+  </app-popup>
+}
+
+@if (showPopup === "delete") {
+  <app-popup (close)="closePopup()">
+    <app-popup-delete (closePopup)="closePopup()" type="association" (removeId)="removeAssociation()" ></app-popup-delete>
   </app-popup>
 }

@@ -59,11 +59,9 @@ export class RoleService {
     name: string,
   ): Promise<Role> {
     const role = await this.getById(idUser, idAssociation);
-
     if (name !== undefined) {
       role.name = name;
     }
-
     return await this.repository.save(role);
   }
 
@@ -71,5 +69,9 @@ export class RoleService {
     return await this.repository
       .delete({ idUser, idAssociation })
       .then((association) => association.affected === 1);
+  }
+
+  async removeUserFromAllRoles(idUser: number): Promise<void> {
+    await this.repository.delete({ idUser: idUser });
   }
 }

@@ -1,5 +1,5 @@
 @if (association){
-    <section class="association-card-wrap" [routerLink]="['/associations', association.id]" (mouseover)="isHovered = true" (mouseleave)="isHovered = false">
+    <a class="association-card-wrap" [routerLink]="['/associations', association.id]">
         <main class="association-card-wrap-content">
             <div class="association-card-wrap-content-id">
                 <p>#{{association.id}}</p>
@@ -9,21 +9,6 @@
                 <p class="association-card-wrap-content-infos-size">{{association.members.length}} members</p>
             </div>
         </main>
-
-        @if (isHovered){
-            <div class="association-card-wrap-delete" (click)="openPopup($event)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 6H21M19 6V20C19 21 18 22 17 22H7C6 22 5 21 5 20V6M8 6V4C8 3 9 2 10 2H14C15 2 16 3 16 4V6M10 11V17M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-            </div>
-        }
         
-        
-    </section>
+    </a>
 }
-
-@if (showPopup) {
-    <app-popup (close)="closePopup()">
-      <app-popup-delete type="association" (closePopup)="closePopup()" (removeId)="isDeleted()"></app-popup-delete>
-    </app-popup>
-  }

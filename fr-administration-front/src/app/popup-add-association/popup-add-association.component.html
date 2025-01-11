@@ -1,0 +1,30 @@
+<div class="popup-wrap-content">
+    <h2 class="popup-wrap-content-title">Ajouter une association</h2>
+    <div class="popup-wrap-content-separator"></div>
+    
+    <form class="popup-wrap-content-form">
+      <div class="form-group">
+        <label for="name">Nom de l'association</label>
+        <input
+          id="name"
+          type="text"
+          [(ngModel)]="newAssociation.name"
+          name="name"
+          placeholder="Nom de l'association"
+          required
+        />
+      </div>
+    </form>
+    
+    <section class="popup-wrap-content-actions">
+      <div class="popup-wrap-content-actions-cancel" (click)="close()">
+        <p>Annuler</p>
+        <div *ngIf="isLoading" class="loader"></div>
+      </div>
+      <div class="popup-wrap-content-actions-cta" (click)="addAssociation()">
+        <p>Ajouter</p>
+        <div *ngIf="isLoading" class="loader"></div>
+      </div>
+    </section>
+  </div>
+  

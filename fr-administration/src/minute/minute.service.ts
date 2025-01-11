@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equal, Repository } from 'typeorm';
 import { Minute } from './minute.entity';
@@ -9,13 +9,14 @@ import { plainToInstance } from 'class-transformer';
 @Injectable()
 export class MinuteService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     @InjectRepository(Minute)
     private repository: Repository<Minute>,
   ) {}
 
   async getAll(): Promise<Minute[]> {
-    return await this.repository.find();
+    return await this.repository.find({ relations: ['voters'] });
   }
 
   async getById(idMinute: number): Promise<Minute> {
@@ -24,7 +25,6 @@ export class MinuteService {
       relations: ['voters'],
     });
 
-    minute.voters = plainToInstance(User, minute.voters);
     return minute;
   }
 
@@ -67,6 +67,7 @@ export class MinuteService {
 
   async update(
     idMinute: number,
+    idVoters: number[],
     idAssociation: number,
     content: string,
   ): Promise<Minute> {
@@ -74,6 +75,13 @@ export class MinuteService {
 
     if (idAssociation !== undefined) {
       minute.idAssociation = idAssociation;
+    }
+
+    if (idVoters !== undefined) {
+      const voters: User[] = await Promise.all(
+        idVoters.map((id) => this.userService.getById(+id)),
+      );
+      minute.voters = voters;
     }
 
     if (content !== undefined) {
@@ -87,5 +95,27 @@ export class MinuteService {
     return await this.repository
       .delete(idMinute)
       .then((association) => association.affected === 1);
+  }
+
+  async removeVoter(idMinute: number, idVoter: number): Promise<Minute> {
+    const minute: Minute = await this.repository.findOne({
+      where: { idMinute: Equal(idMinute) },
+      relations: ['voters'],
+    });
+
+    minute.voters = minute.voters.filter((voter) => voter.id !== idVoter);
+
+    return await this.repository.save(minute);
+  }
+
+  async removeUserFromAllMinutes(idUser: number): Promise<void> {
+    const minutes = await this.repository.find({
+      relations: ['voters'],
+    });
+
+    for (const minute of minutes) {
+      minute.voters = minute.voters.filter((voter) => voter.id !== idUser);
+      await this.repository.save(minute);
+    }
   }
 }

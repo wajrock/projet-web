@@ -19,9 +19,6 @@ export class User {
   @Exclude()
   public password: string;
 
-  @Column()
-  public avatar: string;
-
   constructor(
     firstname: string,
     lastname: string,
