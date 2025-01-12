@@ -1,6 +1,9 @@
 @if (minutesData) {
 <section class="minutes-card-wrap" (click)="openPopup()">
   <main class="minutes-card-wrap-content">
+    <div class="minutes-card-wrap-content-id">
+      <p>#{{ minutesData.idMinute }}</p>
+    </div>
     <div class="minutes-card-wrap-content-date">
       <h1>{{ minutesData.date }}</h1>
     </div>

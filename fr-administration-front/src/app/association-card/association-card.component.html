@@ -1,7 +1,7 @@
 @if (association){
     <a class="association-card-wrap" [routerLink]="['/associations', association.id]">
         <main class="association-card-wrap-content">
-            <div class="association-card-wrap-content-id">
+            <div class="association-card-wrap-content-id" [ngClass]="[loggedUserIsPresident ? 'president' : '']">
                 <p>#{{association.id}}</p>
             </div>
             <div class="association-card-wrap-content-infos">

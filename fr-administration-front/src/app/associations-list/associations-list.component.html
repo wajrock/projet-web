@@ -6,7 +6,7 @@
     </a>
     <div class="associations-container-header-search">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-        <path d="M21.0002 21L16.7002 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21.0002 21L16.7002 16.7M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <input (input)="search($event)" type="text" placeholder="Search an association...">
     </div>
@@ -14,10 +14,15 @@
 
   <!-- Affichage de la liste des associations -->
   <section class="associations-container-grid">
-    @for (association of dataSource; track association.id){
-      <app-association-card [association]="association"></app-association-card>
-
+    @if (associationsListFiltered.length > 0){
+      @for (association of associationsListFiltered; track association.id){
+        <app-association-card [association]="association"></app-association-card>
+  
+      }
+    } @else {
+      <p class="associations-container-grid-empty">No associations match.</p>
     }
+  
   </section>
 </section>
 

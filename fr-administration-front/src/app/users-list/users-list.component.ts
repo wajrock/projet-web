@@ -25,9 +25,8 @@ export interface UserData{
 })
 
 export class UsersListComponent implements OnInit{
-  displayedColumns: string[] = ['id', 'lastname', 'firstname', 'age', 'actions'];
-  originaleDataSource: UserData[] = [];
-  dataSource:UserData[] = [];
+  usersList: UserData[] = [];
+  usersListFiltered:UserData[] = [];
   showPopup: boolean= false;
   constructor (private http: HttpClient) {};
   
@@ -55,15 +54,15 @@ export class UsersListComponent implements OnInit{
     this.http.get('http://localhost:3000/users', { observe: 'response' })
       .subscribe({
         next: (response) => {
-          this.originaleDataSource =  response.body as [];
-          this.dataSource =  response.body as [];
+          this.usersList =  response.body as [];
+          this.usersListFiltered =  response.body as [];
         },
       error: (error) => console.log('error')});
   }
 
   search(event:Event):void{
     const value = (event.target as HTMLInputElement).value;
-    this.dataSource = this.originaleDataSource.filter((data:UserData) => 
+    this.usersListFiltered = this.usersList.filter((data:UserData) => 
       data.lastname.toLowerCase().includes(value.toLowerCase()) || 
       data.id.toString() === value ||
       data.firstname.toLowerCase().includes(value.toLowerCase()))

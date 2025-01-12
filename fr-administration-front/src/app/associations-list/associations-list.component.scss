@@ -21,17 +21,19 @@
             color: #64748b;
 
             & svg{
-                height: 1.25rem;
-                display: none;
+                height: 1.5rem;
             }
 
             & input{
                 background-color: transparent;
                 border: none;
                 outline: none;
-                
                 font-size: 1rem;
                 font-weight: 600;
+
+                &::placeholder{
+                    color: #64748b;
+                }
             }
         }
 
@@ -53,5 +55,11 @@
         width: 100%;
         grid-template-columns: repeat(4,1fr);
         gap: 1rem;
+
+        &-empty{
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+        }
     }
 }

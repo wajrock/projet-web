@@ -30,6 +30,11 @@
             border-radius: .5rem;
             font-size: .8rem;
             font-weight: 600;
+
+            &.president{
+                color: #e2e8f0;
+                background-color: #0f172a;
+            }
         }
     
         &-infos{

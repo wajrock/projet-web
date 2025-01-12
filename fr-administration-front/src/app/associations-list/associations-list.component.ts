@@ -29,9 +29,8 @@ export interface AssociationData {
   styleUrls: ['./associations-list.component.scss'],
 })
 export class AssociationsListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'actions'];
-  originaleDataSource: AssociationData[] = [];
-  dataSource: AssociationData[] = [];
+  associationsList: AssociationData[] = [];
+  associationsListFiltered: AssociationData[] = [];
   showPopup: boolean = false;
 
   constructor(
@@ -65,8 +64,8 @@ export class AssociationsListComponent implements OnInit {
       .get('http://localhost:3000/associations', { observe: 'response' })
       .subscribe({
         next: (response) => {
-          this.originaleDataSource = response.body as AssociationData[];
-          this.dataSource = response.body as AssociationData[];
+          this.associationsList = response.body as AssociationData[];
+          this.associationsListFiltered = response.body as AssociationData[];
         },
         error: (error) =>
           console.error('Error fetching associations:', error),
@@ -76,7 +75,7 @@ export class AssociationsListComponent implements OnInit {
   // Filtre les associations en fonction de la recherche
   search(event: Event): void {
     const value = (event.target as HTMLInputElement).value.toLowerCase();
-    this.dataSource = this.originaleDataSource.filter(
+    this.associationsListFiltered = this.associationsList.filter(
       (association) =>
         association.name.toLowerCase().includes(value) ||
         association.id.toString() === value
