@@ -4,22 +4,24 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { RoleService } from 'src/role/role.service';
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { Role } from 'src/role/role.entity';
 
+// Définition d'un type générique Mock pour les services
 export type MockType<T> = {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   [P in keyof T]?: jest.Mock<{}>;
 };
 
-export const repositoryMockFactory: () => MockType<Repository<any>> = jest.fn(
-  () => ({
-    findOne: jest.fn((entity) => entity),
-  }),
-);
+// Fonction pour créer un mock de Repository générique
+export const repositoryMockFactory: () => MockType<Repository<any>> = jest.fn(() => ({
+  findOne: jest.fn(entity => entity),
+}));
 
 describe('UsersController', () => {
   let controller: UsersController;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let service: UsersService;
+  let roleService: RoleService;  // Pas de type jest.Mocked ici, juste RoleService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,53 +29,79 @@ describe('UsersController', () => {
       providers: [
         UsersService,
         {
+          provide: RoleService, // Mock explicite de RoleService
+          useValue: {
+            getByIdUser: jest.fn(), // Simuler la méthode getByIdUser
+          },
+        },
+        {
           provide: getRepositoryToken(User),
-          useFactory: repositoryMockFactory,
+          useFactory: repositoryMockFactory, // Utilisation du mock pour le repository User
+        },
+        {
+          provide: getRepositoryToken(Role),
+          useFactory: repositoryMockFactory, // Utilisation du mock pour le repository Role
         },
       ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
+    roleService = module.get<RoleService>(RoleService); // Récupération de l'instance du mock
     controller = module.get<UsersController>(UsersController);
   });
 
-  describe('first', () => {
-    it('should be defined', () => {
-      expect(controller).toBeDefined();
-    });
-  });
+  describe('getRoles', () => {
+    it('should return roles for a given user ID', async () => {
+      const roles: Role[] = [
+        { idUser: 1, idAssociation: 100, name: 'Admin' },
+        { idUser: 1, idAssociation: 101, name: 'User' },
+      ];
 
-  describe('getAll', () => {
-    it('should return an array of users', async () => {
-      const expected = Promise.all([
-        {
-          id: 0,
-          firstname: 'John',
-          lastname: 'Doe',
-          age: 23,
-          password: '',
-        },
-      ]);
-      jest.spyOn(service, 'getAll').mockImplementation(() => expected);
-      expect(await controller.getAll()).toBe(await expected);
+      // Moquage explicite de getByIdUser
+      jest.spyOn(roleService, 'getByIdUser').mockResolvedValue(roles);
+      jest.spyOn(service, 'getById').mockResolvedValue({ id: 1 } as User);
+
+      const result = await controller.getRoles({ id: 1 });
+      expect(result).toBe(roles);
+    });
+
+    it('should throw a NOT_FOUND exception if user does not exist', async () => {
+      jest.spyOn(service, 'getById').mockResolvedValue(undefined);
+
+      await expect(controller.getRoles({ id: 999 })).rejects.toThrowError(
+        new HttpException(
+          'Could not find a user with the id 999',
+          HttpStatus.NOT_FOUND,
+        ),
+      );
+    });
+
+    it('should throw a BAD_REQUEST exception if roleService.getByIdUser fails', async () => {
+      const error = new Error('Role service failed');
+      jest.spyOn(service, 'getById').mockResolvedValue({ id: 1 } as User);
+      jest.spyOn(roleService, 'getByIdUser').mockRejectedValue(error);
+
+      await expect(controller.getRoles({ id: 1 })).rejects.toThrowError(
+        new HttpException('Role service failed', HttpStatus.BAD_REQUEST),
+      );
     });
   });
 
   describe('getById', () => {
-    it('should return a single user, with the provided id', async () => {
-      const expected = await Promise.all([
-        {
-          id: 0,
-          firstname: 'John',
-          lastname: 'Doe',
-          age: 23,
-          password: '',
-        },
-      ]);
-      jest.spyOn(service, 'getById').mockImplementation((id) => {
-        return Promise.resolve(expected.find((user) => user.id === id));
-      });
-      expect(await controller.getById({ id: 0 })).toBe(expected[0]);
+    it('should return a user if found', async () => {
+      const user = { id: 1, name: 'John Doe' };
+      jest.spyOn(service, 'getById').mockResolvedValue(user as unknown as User);
+
+      const result = await controller.getById({ id: 1 });
+      expect(result).toBe(user);
+    });
+
+    it('should throw a NOT_FOUND exception if user does not exist', async () => {
+      jest.spyOn(service, 'getById').mockResolvedValue(undefined);
+
+      await expect(controller.getById({ id: 999 })).rejects.toThrowError(
+        new HttpException('User not found', HttpStatus.NOT_FOUND),
+      );
     });
   });
 });

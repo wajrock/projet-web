@@ -29,9 +29,5 @@ export class UserInput {
   })
   public password: string;
 
-  @ApiProperty({
-    description: 'The avatar of the user',
-    type: String,
-  })
-  public avatar: string;
+  
 }
