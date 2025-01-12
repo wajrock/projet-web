@@ -81,18 +81,4 @@
     }
   }
   
-  .loader {
-    width: 1.5rem;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    border: 0.3rem solid transparent;
-    border-right-color: #0f172a;
-    animation: spin 1s infinite linear;
-  }
-  
-  @keyframes spin {
-    to {
-      transform: rotate(1turn);
-    }
-  }
   

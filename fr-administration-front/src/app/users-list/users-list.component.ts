@@ -14,13 +14,12 @@ export interface UserData{
   lastname: string,
   firstname: string,
   age: number;
-  avatar: string;
   role?: string;
 }
 
 @Component({
   selector: 'app-users-list',
-  imports: [MatTableModule, NavComponent,RouterLink, UserCardComponent, PopupAddUserComponent,PopupComponent],
+  imports: [MatTableModule,RouterLink, UserCardComponent, PopupAddUserComponent,PopupComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'
 })
@@ -30,7 +29,7 @@ export class UsersListComponent implements OnInit{
   originaleDataSource: UserData[] = [];
   dataSource:UserData[] = [];
   showPopup: boolean= false;
-  constructor (private http: HttpClient,private service:TokenStorageService,private router:Router) {};
+  constructor (private http: HttpClient) {};
   
   
   ngOnInit(): void {

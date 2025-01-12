@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { TokenStorageService } from '../services/token-storage.service';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AssociationCardComponent } from '../association-card/association-card.component';
 import { PopupAddAssociationComponent } from '../popup-add-association/popup-add-association.component';
 import { PopupComponent } from '../popup/popup.component';
@@ -12,7 +11,6 @@ import { UserData } from '../users-list/users-list.component';
 export interface AssociationData {
   id: number;
   name: string;
-  logo: string;
   members: UserData[];
 }
 
@@ -38,8 +36,6 @@ export class AssociationsListComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private service: TokenStorageService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {

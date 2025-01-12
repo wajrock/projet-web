@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PopupAddUserComponent } from './popup-add-user.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('PopupAddUserComponent', () => {
   let component: PopupAddUserComponent;
@@ -8,7 +9,8 @@ describe('PopupAddUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PopupAddUserComponent]
+      imports: [PopupAddUserComponent],
+      providers: [provideHttpClient()]
     })
     .compileComponents();
 

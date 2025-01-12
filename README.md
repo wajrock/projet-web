@@ -44,7 +44,6 @@ Le frontend permet à un utilisateur authentifié de réaliser les actions suiva
 ### Général
 - Node.js : version 18 ou supérieure
 - npm ou yarn : pour gérer les dépendances
-- Base de données : MySQL (ou une autre compatible)
 
 ### Backend
 - NestJS CLI : pour la gestion du projet backend
@@ -97,14 +96,14 @@ cd projet-web
 ## Structure du projet
 
 ```plaintext
-|-- backend/        # Code source du backend (NestJS)
-|   |-- src/        # Dossier principal de l'application NestJS
+|-- fr-administration/        # Code source du backend (NestJS)
+|   |-- src/                  # Dossier principal de l'application NestJS
 |
-|-- frontend/       # Code source du frontend (Angular)
-|   |-- src/        # Dossier principal de l'application Angular
-|   |-- angular.json # Configuration Angular
+|-- fr-administration-front/  # Code source du frontend (Angular)
+|   |-- src/                  # Dossier principal de l'application Angular
+|   |-- angular.json          # Configuration Angular
 |
-|-- README.md       # Documentation principale
+|-- README.md                 # Documentation principale
 ```
 
 ---

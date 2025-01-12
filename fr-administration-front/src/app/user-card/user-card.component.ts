@@ -22,7 +22,8 @@ export class UserCardComponent implements OnInit {
   }
 
   fetchUserAssociations(): void {
-    this.http
+    if (this.user){
+      this.http
       .get<AssociationData[]>(
         `http://localhost:3000/associations/user/${this.user.id}`,
         {
@@ -37,5 +38,7 @@ export class UserCardComponent implements OnInit {
         },
         error: (error) => console.log('error'),
       });
+    }
+   
   }
 }

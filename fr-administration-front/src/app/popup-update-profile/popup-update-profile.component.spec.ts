@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PopupUpdateProfileComponent } from './popup-update-profile.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('PopupUpdateProfileComponent', () => {
   let component: PopupUpdateProfileComponent;
@@ -8,7 +9,8 @@ describe('PopupUpdateProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PopupUpdateProfileComponent]
+      imports: [PopupUpdateProfileComponent],
+      providers: [provideHttpClient()]
     })
     .compileComponents();
 

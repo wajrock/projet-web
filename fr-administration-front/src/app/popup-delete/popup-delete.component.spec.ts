@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PopupDeleteComponent } from './popup-delete.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('PopupDeleteComponent', () => {
   let component: PopupDeleteComponent;
@@ -8,7 +9,8 @@ describe('PopupDeleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PopupDeleteComponent]
+      imports: [PopupDeleteComponent],
+      providers: [provideHttpClient()]
     })
     .compileComponents();
 

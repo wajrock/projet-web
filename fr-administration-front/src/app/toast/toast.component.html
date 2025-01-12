@@ -1,4 +1,4 @@
-<div class="toast-wrap" [ngClass]="type" [ngClass]="[type, isActive ? 'open' : 'close']">
+<div class="toast-wrap" [ngClass]="[type || '', isActive ? 'open' : 'close']">
   <div class="toast-wrap-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
       <path

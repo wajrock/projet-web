@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PopupAddAssociationComponent } from './popup-add-association.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('PopupAddAssociationComponent', () => {
   let component: PopupAddAssociationComponent;
@@ -8,7 +9,8 @@ describe('PopupAddAssociationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PopupAddAssociationComponent]
+      imports: [PopupAddAssociationComponent],
+      providers: [provideHttpClient()]
     })
     .compileComponents();
 
