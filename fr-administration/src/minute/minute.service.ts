@@ -2,9 +2,9 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equal, Repository } from 'typeorm';
 import { Minute } from './minute.entity';
-import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/user.entity';
 import { plainToInstance } from 'class-transformer';
+import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class MinuteService {

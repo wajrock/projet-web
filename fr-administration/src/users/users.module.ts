@@ -3,9 +3,9 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { RoleModule } from 'src/role/role.module';
-import { AssociationsModule } from 'src/associations/associations.module';
-import { MinuteModule } from 'src/minute/minute.module';
+import { AssociationsModule } from '../associations/associations.module';
+import { MinuteModule } from '../minute/minute.module';
+import { RoleModule } from '../role/role.module';
 
 @Module({
   imports: [

@@ -1,15 +1,15 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Association } from './association.entity';
-import { User } from 'src/users/user.entity';
-import { UsersService } from 'src/users/users.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Equal, Repository } from 'typeorm';
-import { AssociationDTO } from './associations.dto';
-import { MinuteService } from 'src/minute/minute.service';
-import { Minute } from 'src/minute/minute.entity';
+import { Repository, Equal } from 'typeorm';
+import { Minute } from '../minute/minute.entity';
+import { MinuteService } from '../minute/minute.service';
+import { Role } from '../role/role.entity';
+import { RoleService } from '../role/role.service';
+import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
 import { Member } from './association.member';
-import { RoleService } from 'src/role/role.service';
-import { Role } from 'src/role/role.entity';
+import { AssociationDTO } from './associations.dto';
 
 @Injectable()
 export class AssociationsService {

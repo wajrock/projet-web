@@ -3,10 +3,10 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Role } from 'src/role/role.entity';
-import { RoleService } from 'src/role/role.service';
-import { AssociationsService } from 'src/associations/associations.service';
-import { MinuteService } from 'src/minute/minute.service';
+import { MinuteService } from '../minute/minute.service';
+import { AssociationsService } from '../associations/associations.service';
+import { Role } from '../role/role.entity';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class UsersService {

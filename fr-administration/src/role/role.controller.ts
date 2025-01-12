@@ -14,7 +14,7 @@ import { Role } from './role.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { RoleUpdate } from './RoleUpdate';
 import { RoleInput } from './RoleInput';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 
 @ApiTags('role')
 @Controller('roles')

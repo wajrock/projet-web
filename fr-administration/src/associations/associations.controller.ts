@@ -1,21 +1,21 @@
-import { AssociationsService } from './associations.service';
 import {
   Controller,
   Get,
-  Body,
-  Post,
   Param,
-  Put,
-  Delete,
   HttpException,
   HttpStatus,
+  Post,
+  Body,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { AssociationDTO } from './associations.dto';
-import { Minute } from 'src/minute/minute.entity';
-import { Member } from './association.member';
+import { Minute } from '../minute/minute.entity';
+import { Role } from '../role/role.entity';
 import { Association } from './association.entity';
-import { Role } from 'src/role/role.entity';
+import { Member } from './association.member';
+import { AssociationDTO } from './associations.dto';
+import { AssociationsService } from './associations.service';
 
 @ApiTags('associations')
 @Controller('associations')

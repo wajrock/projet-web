@@ -14,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { MinuteUpdate } from './MinuteUpdate';
 import { MinuteInput } from './MinuteInput';
 import { MinuteService } from './minute.service';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 
 @ApiTags('minute')
 @Controller('minutes')

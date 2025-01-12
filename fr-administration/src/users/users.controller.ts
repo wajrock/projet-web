@@ -14,8 +14,8 @@ import { User } from './user.entity';
 import { UsersService } from './users.service';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { UserInput } from './UserInput';
+import { Role } from '../role/role.entity';
 // import { AuthGuard } from '@nestjs/passport';
-import { Role } from 'src/role/role.entity';
 
 @ApiTags('users')
 @Controller('users')

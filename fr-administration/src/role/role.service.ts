@@ -2,9 +2,8 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Equal, Repository } from 'typeorm';
 import { Role } from './role.entity';
-import { User } from 'src/users/user.entity';
-import { UsersService } from 'src/users/users.service';
-
+import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
 @Injectable()
 export class RoleService {
   constructor(
