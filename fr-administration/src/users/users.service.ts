@@ -21,6 +21,12 @@ export class UsersService {
     private readonly associationsService: AssociationsService,
   ) {}
 
+  // Extraction de la logique de hachage
+  private async hashPassword(password: string): Promise<string> {
+    const saltOrRounds = 10;
+    return bcrypt.hash(password ? password : 'default', saltOrRounds);
+  }
+
   async getAll(): Promise<User[]> {
     return await this.repository.find();
   }
@@ -39,12 +45,7 @@ export class UsersService {
     age: number,
     password: string,
   ): Promise<User> {
-    const saltOrRounds = 10;
-
-    const hash = await bcrypt.hash(
-      password ? password : 'default',
-      saltOrRounds,
-    );
+    const hash = await this.hashPassword(password); // Utilisation de la méthode hashPassword
 
     const newUser = await this.repository.create({
       lastname: lastname,
@@ -78,9 +79,7 @@ export class UsersService {
     }
 
     if (password !== undefined) {
-      const saltOrRounds = 10;
-
-      const hash = await bcrypt.hash(password, saltOrRounds);
+      const hash = await this.hashPassword(password); // Utilisation de la méthode hashPassword
       user.password = hash;
     }
 
