@@ -262,6 +262,6 @@ Les tests frontend valident l’interaction de l’utilisateur avec l’interfac
 
 ---
 
-## Auteur
+## Auteurs
 
 Développé par **NGOMA Sir William** et **WAJROCK Thibaud**.
